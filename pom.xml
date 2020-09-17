@@ -28,6 +28,11 @@
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <version>2.1.3</version>
         </dependency>
+   <!--     <dependency>
+            <groupId>tk.mybatis</groupId>
+            <artifactId>mapper-spring-boot-starter</artifactId>
+            <version>2.1.5</version>
+        </dependency>-->
 <!--jsp文件支持-->
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -68,6 +73,11 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ftresource.com.bsoft.platform</groupId>
+            <artifactId>bplatform-utils</artifactId>
+            <version>20160831-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

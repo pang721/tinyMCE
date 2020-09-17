@@ -60,7 +60,7 @@ public class FileUploadUtil {
 				}
 				log.info("start upload file: " + fileName);
 				FileCopyUtils.copy(mf.getBytes(), uploadFile);
-				filePathList.add(filepathUrl);
+				filePathList.add("http://127.0.0.1:8282/"+filepathUrl);
 				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -121,7 +121,7 @@ public class FileUploadUtil {
 				log.info("upload failed. filename: " + fileName + e.getMessage());
 				return null;
 			}
-			filePathList.add(filepathUrl);
+			filePathList.add("http://127.0.0.1:8282/"+filepathUrl);
 			
 		}
 		

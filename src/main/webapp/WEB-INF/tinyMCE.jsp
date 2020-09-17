@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="static/tinymce/tinymce.min.js"></script>
-    <script src="static/jquery-3.3.1.min.js"></script>
+   <%-- <script src="static/jquery-3.3.1.min.js"></script>--%>
    <%-- <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>--%>
 
     <script>
@@ -47,6 +47,7 @@
 
                         var xhr, formData;
                         console.log(file.name);
+                        console.log(file);
                         xhr = new XMLHttpRequest();
                         xhr.withCredentials = false;
                         xhr.open('POST', upurl);
@@ -61,6 +62,7 @@
                                 failure('Invalid JSON: ' + xhr.responseText);
                                 return;
                             }
+                            console.log(json);
                             callback(json.location);
                         };
                         formData = new FormData();
@@ -89,9 +91,9 @@
 
 <body>
 <h1>TinyMCE Quick Start Guide</h1>
-<form method="post">
+<%--<form method="post">--%>
     <textarea id="mytextarea"></textarea>
-</form>
+<%--</form>--%>
 <button onclick="get_editor_content()">Get content</button>
 <div id="content">
 
