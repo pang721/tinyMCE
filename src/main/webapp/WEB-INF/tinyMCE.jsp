@@ -18,6 +18,9 @@
             plugins: 'print preview searchreplace autolink directionality visualblocks visualchars fullscreen image link media template code codesample table charmap hr pagebreak nonbreaking anchor insertdatetime advlist lists wordcount imagetools textpattern help emoticons autosave autoresize',
             toolbar: 'code undo redo restoredraft | cut copy paste pastetext | forecolor backcolor bold italic underline strikethrough link anchor | alignleft aligncenter alignright alignjustify outdent indent | styleselect formatselect fontselect fontsizeselect | bullist numlist | blockquote subscript superscript removeformat | table image media charmap emoticons hr pagebreak insertdatetime print preview | fullscreen',
 
+            /*video_template_callback:function(data){
+                return '<span class="mce-preview-object mce-object-video" contenteditable="false" data-mce-object="video"data-mce-p-allowfullscreen="allowfullscreen"data-mce-p-frameborder="no" data-mce-p-scrolling="no" data-mce-p-src='+data.source+' data-mce-p-width='+data.width+' data-mce-p-height='+data.height+' data-mce-p-controls="controls" data-mce-html="%20"> <video width='+data.width+' height='+data.height+' controls="controls"> <source src='+data.source+' type='+data.sourcemime+'></source> </video> </span>';
+            },*/
 
                 file_picker_callback: function (callback, value, meta) {
                     //文件分类

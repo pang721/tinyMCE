@@ -12,15 +12,25 @@ tinymce.init({
     toolbar_mode: 'wrap',
     media_live_embeds:true, //能够预览内嵌代码视频
     extended_valid_elements :'video[src|width]',
+
+    media_url_resolver: function(data, resolve) {
+        try {
+            var videoUri = encodeURI(data.url);
+            var embedHtml = '<p><span data-mce-selected="1" data-mce-object="video" data-mce-p-controls="controls" data-mce-p-controlslist="nodownload"  data-mce-p-allowfullscreen="true"  style="width: 200px;height:120px;display: block;" data-mce-p-src=${res.url} > <video src=${res.url} width="100%" height="100%" controls="controls" controlslist="nodownload"> </video>  </span>  </p>  <p style="text-align: left;"></p>';resolve({ html: embedHtml });
+        } catch (e) {
+            resolve({ html: "" });
+        }
+    },
+
     //extended_valid_elements :'iframe[src|style|width|height|scrolling|marginwidth|marginheight|frameborder]',
   /*  video_template_callback:function(data){
         return '<span class="mce-preview-object mce-object-video" contenteditable="false" data-mce-object="video"data-mce-p-allowfullscreen="allowfullscreen"data-mce-p-frameborder="no" data-mce-p-scrolling="no" data-mce-p-src='+data.source+' data-mce-p-width='+data.width+' data-mce-p-height='+data.height+' data-mce-p-controls="controls" data-mce-html="%20"> <video width='+data.width+' height='+data.height+' controls="controls"> <source src='+data.source+' type='+data.sourcemime+'></source> </video> </span>';
     },*/
-    video_template_callback:function(data){
+    /*video_template_callback:function(data){
         console.log(123);
         return ' <object width='+data.width+' height='+data.height+' src='+data.source+'  scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" allowtransparency="true"> <source src='+data.source+' type='+data.sourcemime+'></source> </object> ';
         //return ' <iframe width='+data.width+' height='+data.height+' src='+data.source+'  scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" allowtransparency="true"> <source src='+data.source+' type='+data.sourcemime+'></source> </iframe> ';
-    },
+    },*/
     file_picker_callback: function (callback, value, meta) {
         //文件分类
         var filetype='.pdf, .txt, .zip, .rar, .7z, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .mp3, .mp4';

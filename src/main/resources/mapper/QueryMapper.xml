@@ -1,34 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.example.demo.dao.QueryMapper">
-    <insert id="insertNotice">
-        insert into t_announcement values('测试公告',#{content},'未知者',GETDATE())
-    </insert>
-    <select id="findNotice" resultType="com.example.demo.model.Notice">
-        select title,content from t_announcement where announcement_id = #{id}
-    </select>
-    <insert id="addVaccine" parameterType="com.example.demo.model.Vaccin">
-        insert into t_vaccine values(#{ymlb},#{yl},#{jzyl},#{ymfy},#{ymmc},#{zc},#{zcms},#{jzxg},#{jzbw},#{jzjj},#{zysx},#{knfy});
-    </insert>
-    <delete id="deleteVaccine">
-        delete from t_vaccine where id = #{id}
-    </delete>
-    <update id="updateVaccine">
-        update t_vaccine set ymlb=#{ymlb},yl=#{yl},jzyl=#{jzyl},ymfy=#{ymfy},ymmc=#{ymmc},zc=#{zc},zcms=#{zcms},jzxg=#{jzxg},jzbw=#{jzbw},jzjj=#{jzjj},zysx=#{zysx},knfy=#{knfy} where id = #{id};
-    </update>
-    <select id="findVaccine" resultType="com.example.demo.model.Vaccin">
-        select id,ymlb,yl,jzyl,ymfy,ymmc,zc,zcms,jzxg,jzbw,jzjj,zysx,knfy from t_vaccine
-           <if test="id != 0">
-               where id = #{id}
-           </if>
-           order by id desc
-    </select>
-    <select id="finds" parameterType="map" resultType="com.example.demo.model.Vaccin">
-        select id,ymlb,yl,jzyl,ymfy,ymmc,zc,zcms,jzxg,jzbw,jzjj,zysx,knfy from t_vaccine
-        <if test="zpmc != null and zpmc != ''">
-            where ymmc like '%${zpmc}%'
-        </if>
-        order by id desc
-    </select>
+
 
 </mapper>

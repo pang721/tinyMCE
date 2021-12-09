@@ -97,7 +97,7 @@ public class FileUploadUtil {
 			String file_type = fileName.substring(fileName.indexOf('.'));
 			if(!".jpg".equals(file_type.toLowerCase()) && !".png".equals(file_type.toLowerCase()))
 				throw new Exception("文件类型错误");
-			fileName = String.valueOf(new Date().getTime()) + file_type;
+			fileName = String.valueOf(System.currentTimeMillis()) + file_type;
 			String newfilepath;
 			newfilepath = filepath + File.separatorChar + fileName;
 			//String filepathUrl = "files" + File.separatorChar + "question" + File.separatorChar + username + File.separatorChar + fileName;
