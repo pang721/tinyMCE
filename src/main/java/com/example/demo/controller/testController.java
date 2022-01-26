@@ -3,20 +3,17 @@ package com.example.demo.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.example.demo.model.*;
 import com.example.demo.service.IQueryService;
 import com.example.demo.util.HttpsClientUtil;
 import com.example.demo.util.QRCodeUtil;
-import com.example.demo.util.encrypt.SignUtil;
 import com.example.demo.util.file.FileUploadUtil;
 import com.example.demo.util.file.MD5FileUtil;
 import com.example.demo.util.other.DateUtils;
 import com.example.demo.util.other.StringUtil;
-import com.example.demo.util.page.Page;
-import com.example.demo.util.page.PagingUtil;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -43,9 +40,11 @@ import java.util.*;
 public class testController {
     @Autowired
     private IQueryService iQueryService;
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
     public static void main(String[] args) throws Exception {
-        String url= "https://openapi.linkingcloud.cn/oauth2/authorize?app_id=LCOP20200402181710759&redirect_uri=http%3a%2f%2fcloud07.linkingcloud.cn%3a9027%2ffkpt.ashx&response_type=code&scope=auth_base,auth_userinfo&state=lc";  // 存放在二维码中的内容,链接或者参数
+        String url= "";  // 存放在二维码中的内容,链接或者参数
         String imgPath = null; //嵌入二维码的图片绝对路径也可以不放
         String destPath = "C:\\Users\\pangx\\Desktop\\files\\1.jpg";// 生成的二维码的路径及名称
         String text = "123";
@@ -60,6 +59,14 @@ public class testController {
     public String test2(){
         return "tinyMCE";
     }
+
+    @RequestMapping("/redis")
+    public void redis(){
+        Object o = redisTemplate.opsForValue().get("1");
+        System.out.println(o);
+    }
+
+
 
     /**
      * 将对象转换成Map<String, String>格式
@@ -171,165 +178,6 @@ public class testController {
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-        @RequestMapping(value = "/establish", method = RequestMethod.GET)
-    public void establish(HttpServletResponse response, HttpServletRequest request){
-       String content=request.getParameter("content");
-       iQueryService.insertNotice(content);
-    }
-    @RequestMapping(value = "/find/{id}", method = RequestMethod.GET)
-    public Map<String, Object>  find(Model model, @PathVariable(value = "id") int id){
-        Notice records= iQueryService.findNotice(id);
-        Map<String, Object> resultMap = new HashMap<String, Object>();
-        resultMap.put("code","0");
-        resultMap.put("data",records);
-        //model.addAttribute("resultMap",resultMap);
-        return resultMap;
-    }
-
-
-    @RequestMapping(value = "/finds", method = RequestMethod.GET)
-    public Map<String, Object>  find(HttpServletRequest request){
-        String zpmc=request.getParameter("zpmc");
-        Map<String, Object> ppMap = new HashMap<String, Object>();
-        ppMap.put("zpmc",zpmc);
-        List<Vaccin> v= iQueryService.finds(ppMap);
-        Map<String, Object> resultMap = new HashMap<String, Object>();
-        resultMap.put("code","0");
-        // resultMap.put("data",records);
-        //model.addAttribute("resultMap",resultMap);
-        return resultMap;
-    }
-
-    /**
-     * 添加疫苗说明
-     * @param v
-     */
-    @RequestMapping(value = "/addVaccine", method = RequestMethod.GET)
-    public void  addVaccine(Vaccin v){
-        Vaccin newVaccin=generate(v);
-        try {
-            iQueryService.addVaccine(newVaccin);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * 删除疫苗说明
-     * @param id
-     */
-    @RequestMapping(value = "/deleteVaccine/{id}", method = RequestMethod.GET)
-    public void deleteVaccine(@PathVariable(value = "id") int id){
-        try {
-            iQueryService.deleteVaccine(id);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * 修改疫苗说明
-     * @param v
-     */
-    @RequestMapping(value = "/updateVaccine", method = RequestMethod.GET)
-    public void  updateVaccine(Vaccin v){
-        Vaccin newVaccin=generate(v);
-        try {
-            iQueryService.updateVaccine(newVaccin);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * 根据id查看疫苗说明的信息
-     * @param request
-     * @param id
-     * @return
-     */
-    @RequestMapping(value = "/findVaccine/{id}", method = RequestMethod.GET)
-    public String findVaccineById(HttpServletRequest request,@PathVariable("id") int id){
-        List<Vaccin> vaccins= iQueryService.findVaccine(null,id);
-        request.setAttribute("v",vaccins.get(0));
-        return "updateVaccine";
-    }
-
-    /**
-     * 查看所有疫苗说明
-     * @param request
-     * @param page
-     * @return
-     */
-    @RequestMapping(value = "/findVaccine", method = RequestMethod.GET)
-    public String findVaccine(HttpServletRequest request, @RequestParam(value="page",required=false,defaultValue="1") int page){
-        Page<Vaccin> pageModel = new Page<Vaccin>();
-        pageModel.setPageNo(page);
-        pageModel.setPageSize(8);
-        List<Vaccin> vaccins= iQueryService.findVaccine(pageModel,0);
-        String pageStr = PagingUtil.getPagelink(page, pageModel.getTotalPage(), "", "findVaccine");
-        request.setAttribute("v",vaccins);
-        request.setAttribute("pageStr",pageStr);
-
-        return "showVaccine";
-    }
-
-    /**
-     * 根据规则转换疫苗说明
-     * @param v
-     * @return
-     */
-    public Vaccin generate(Vaccin v){
-        Map<Integer,String> map=new HashMap<>();
-        map.put(1,"一");
-        map.put(2,"二");
-        map.put(3,"三");
-        map.put(4,"四");
-        map.put(5,"五");
-        map.put(6,"六");
-        map.put(7,"七");
-        map.put(8,"八");
-        map.put(9,"九");
-        map.put(10,"十");
-        String zcms="";
-        if(v.getZc()<=10){
-            zcms = "第"+map.get(v.getZc())+"剂";
-        }
-        v.setZcms(zcms);
-        String jzyl=v.getJzyl().replace(" ","");
-        //儿童疫苗 需yl排序
-        if(v.getYmlb()==0){
-            Double yl=0.00;
-            if(!jzyl.trim().equals("出生")){
-                if(jzyl.indexOf("周岁")!= -1){
-                    jzyl = jzyl.replace("周岁","");
-                    yl = Double.parseDouble(jzyl)*12;
-                }else if(jzyl.indexOf("周龄")!= -1){
-                    jzyl = jzyl.replace("周龄","");
-                    yl = Double.parseDouble(jzyl)*7/30;
-                }else{
-                    jzyl = jzyl.replace("月龄","").replace("月",".").replace("天","");
-                    yl=Double.parseDouble(jzyl);
-                }
-            }
-
-            v.setYl(yl);
-        }
-
-        return v;
-    }
 
 
 }
